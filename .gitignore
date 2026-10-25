@@ -1,0 +1,42 @@
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables dan secrets
+.env
+.env.*
+!.env.example
+
+# Testing dan coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Editor dan sistem operasi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Database lokal (jika menggunakan SQLite)
+*.db
+*.sqlite3
+
+# Python type checker
+.mypy_cache/
+.pyright/
