@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Konsultasi{% endblock %}
+{% block content %}
+<h1>Konsultasi KB</h1>
+<p class="bantu">Jawaban Anda tidak memuat nama atau data pribadi. Boleh dikosongkan bila tidak ada.</p>
+
+<form method="post" action="{{ url_for('konsultasi') }}" id="form-konsul" data-mulai="{{ mulai }}">
+  <ol class="progres" aria-label="Langkah konsultasi">
+    <li data-ke="1">Kebutuhan</li><li data-ke="2">Keluhan</li><li data-ke="3">Tanda bahaya</li><li data-ke="4">Kondisi</li>
+  </ol>
+
+  <section class="langkah" data-langkah="1">
+    <h2>Apa yang ingin Anda ketahui?</h2>
+    <p class="bantu">Boleh pilih lebih dari satu.</p>
+    <div class="grid-opsi">
+      {% for kode, ikon, nama, desk in K.KEBUTUHAN %}
+      <label class="opsi"><input type="checkbox" name="kebutuhan" value="{{ kode }}" {{ 'checked' if kode in pre }}>
+        <span class="isi"><span class="ikon">{{ ikon }}</span><b>{{ nama }}</b><small>{{ desk }}</small></span></label>
+      {% endfor %}
+    </div>
+    <div class="nav-js"><span></span><button class="tombol utama" type="button" data-aksi="maju">Lanjut</button></div>
+  </section>
+
+  <section class="langkah" data-langkah="2">
+    <h2>Adakah keluhan setelah memakai KB?</h2>
+    <div class="daftar-opsi" data-grup>
+      {% for kode, teks in K.KELUHAN %}
+      <label class="opsi baris"><input type="checkbox" name="keluhan" value="{{ kode }}"><span class="isi"><b>{{ teks }}</b></span></label>
+      {% endfor %}
+      <label class="opsi baris tidak"><input type="checkbox" data-none><span class="isi"><b>Tidak ada keluhan</b></span></label>
+    </div>
+    <div class="nav-js"><button class="tombol" type="button" data-aksi="mundur">Kembali</button><button class="tombol utama" type="button" data-aksi="maju">Lanjut</button></div>
+  </section>
+
+  <section class="langkah bahaya" data-langkah="3">
+    <h2>Adakah tanda bahaya berikut?</h2>
+    <p class="bantu">Pilih bila sedang dialami sekarang.</p>
+    <div class="daftar-opsi" data-grup>
+      {% for kode, teks in K.BAHAYA %}
+      <label class="opsi baris"><input type="checkbox" name="bahaya" value="{{ kode }}"><span class="isi"><b>{{ teks }}</b></span></label>
+      {% endfor %}
+      <label class="opsi baris tidak"><input type="checkbox" data-none><span class="isi"><b>Tidak ada tanda bahaya</b></span></label>
+    </div>
+    <div class="nav-js"><button class="tombol" type="button" data-aksi="mundur">Kembali</button><button class="tombol utama" type="button" data-aksi="maju">Lanjut</button></div>
+  </section>
+
+  <section class="langkah" data-langkah="4">
+    <h2>Kondisi Anda</h2>
+    <div class="daftar-opsi">
+      {% for kode, teks in K.KONDISI %}
+      <label class="opsi baris"><input type="checkbox" name="kondisi" value="{{ kode }}"><span class="isi"><b>{{ teks }}</b></span></label>
+      {% endfor %}
+    </div>
+    <label class="medan">KB yang sedang Anda gunakan
+      <select name="kb_saat_ini">
+        <option value="">Pilih (opsional)</option>
+        {% for kode, nama in K.KB_SAAT_INI.items() %}<option value="{{ kode }}">{{ nama }}</option>{% endfor %}
+      </select>
+    </label>
+    <div class="nav-js"><button class="tombol" type="button" data-aksi="mundur">Kembali</button><span></span></div>
+    <div class="aksi"><button class="tombol utama besar" type="submit">Lihat hasil</button></div>
+  </section>
+</form>
+{% endblock %}

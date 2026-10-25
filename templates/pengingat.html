@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Pengingat{% endblock %}
+{% block content %}
+<h1>Pengingat kunjungan ulang</h1>
+<p class="bantu">Isi tanggal yang diberikan bidan atau tertera di kartu KB Anda. Aplikasi tidak menghitung jadwal sendiri. Data hanya tersimpan di browser perangkat ini.</p>
+
+<form id="form-ingat" class="kartu form-ingat">
+  <label class="medan">Metode
+    <select id="i-metode" required>
+      <option value="KB suntik">KB suntik</option>
+      <option value="Pil KB">Pil KB</option>
+      <option value="IUD / spiral">IUD / spiral</option>
+      <option value="Implan">Implan</option>
+      <option value="Lainnya">Lainnya</option>
+    </select>
+  </label>
+  <label class="medan">Tanggal kunjungan ulang
+    <input type="date" id="i-tanggal" required>
+  </label>
+  <label class="medan">Catatan (opsional)
+    <input type="text" id="i-catatan" maxlength="80" placeholder="Contoh: bawa kartu KB">
+  </label>
+  <button class="tombol utama" type="submit">Simpan pengingat</button>
+</form>
+
+<h2>Pengingat Anda</h2>
+<div id="daftar-ingat" class="grid dua"></div>
+<p id="kosong-ingat" class="kosong">Belum ada pengingat.</p>
+{% endblock %}

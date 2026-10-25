@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Statistik{% endblock %}
+{% block content %}
+<h1>Statistik konsultasi</h1>
+<p class="bantu">Ringkasan anonim. Yang tersimpan hanya fakta yang dipilih, kesimpulan, dan waktu. Tidak ada nama, kontak, atau alamat IP.</p>
+
+<section class="strip">
+  <div><b>{{ s.total }}</b><span>total konsultasi</span></div>
+  <div><b>{{ s.hari_ini }}</b><span>hari ini</span></div>
+  <div><b>{{ s.urgensi[2] + s.urgensi[3] }}</b><span>disarankan konsultasi langsung / darurat</span></div>
+</section>
+
+{% if s.total %}
+<div class="grid dua">
+  <section class="kartu">
+    <h2>Topik terbanyak</h2>
+    {% for kode, n in s.kesimpulan %}
+    <div class="bar"><span class="bar-label">{{ K.FACTS[kode].pendek }}</span>
+      <span class="bar-isi"><i style="width: {{ (n / s.total * 100)|round|int }}%"></i></span><span class="bar-n">{{ n }}</span></div>
+    {% endfor %}
+  </section>
+  <section class="kartu">
+    <h2>Tingkat urgensi</h2>
+    {% for tingkat in (1, 2, 3) %}
+    <div class="bar"><span class="bar-label">{{ K.URGENSI[tingkat].label }}</span>
+      <span class="bar-isi"><i class="u{{ tingkat }}" style="width: {{ (s.urgensi[tingkat] / s.total * 100)|round|int }}%"></i></span><span class="bar-n">{{ s.urgensi[tingkat] }}</span></div>
+    {% endfor %}
+    <h2>Masukan terbanyak</h2>
+    {% for kode, n in s.masukan %}
+    <div class="bar"><span class="bar-label">{{ K.FACTS[kode].pendek }}</span>
+      <span class="bar-isi"><i style="width: {{ (n / s.total * 100)|round|int }}%"></i></span><span class="bar-n">{{ n }}</span></div>
+    {% endfor %}
+  </section>
+</div>
+{% else %}
+<p class="kosong">Belum ada konsultasi. <a href="{{ url_for('konsultasi') }}">Mulai konsultasi pertama</a>.</p>
+{% endif %}
+{% endblock %}

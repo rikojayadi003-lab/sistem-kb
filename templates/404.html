@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}Tidak ditemukan{% endblock %}
+{% block content %}
+<h1>Halaman tidak ditemukan</h1>
+<p class="bantu">Alamat yang Anda buka tidak ada, atau hasil konsultasinya sudah tidak tersimpan.</p>
+<div class="aksi"><a class="tombol utama" href="{{ url_for('index') }}">Ke beranda</a><a class="tombol" href="{{ url_for('konsultasi') }}">Mulai konsultasi</a></div>
+{% endblock %}

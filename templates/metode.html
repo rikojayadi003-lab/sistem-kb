@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Metode KB{% endblock %}
+{% block content %}
+<h1>Mengenal metode KB</h1>
+<p class="bantu">Ringkasan umum dari wawancara dengan {{ K.SUMBER.pakar }}. Pilihan yang tepat selalu disesuaikan dengan kondisi kesehatan, kebutuhan, dan kenyamanan Anda.</p>
+
+<div class="grid empat">
+  {% for m in K.METODE %}
+  <article class="kartu metode">
+    <span class="ikon-besar" aria-hidden="true">{{ m.ikon }}</span>
+    <h3>{{ m.nama }}</h3>
+    <span class="lencana">{{ m.pola }}</span>
+  </article>
+  {% endfor %}
+</div>
+
+<h2>Perbandingan</h2>
+<div class="tabel-wadah">
+<table>
+  <thead><tr><th>Metode</th><th>Pola penggunaan</th><th>Yang perlu diperhatikan</th><th>Yang perlu dikonsultasikan</th></tr></thead>
+  <tbody>
+  {% for m in K.METODE %}
+    <tr><td><b>{{ m.ikon }} {{ m.nama }}</b></td><td>{{ m.pola }}</td><td>{{ m.perhatian }}</td><td>{{ m.konsul }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<p class="bantu">Setiap metode memiliki manfaat dan efek samping yang berbeda, jadi pemilihannya perlu disesuaikan dengan kondisi dan kebutuhan Anda.</p>
+
+<section class="kartu persiapan" id="kartu-persiapan">
+  <h2>Kartu persiapan konsultasi</h2>
+  <p class="bantu">Hal yang biasa ditanyakan bidan. Centang yang sudah Anda siapkan.</p>
+  <ul class="cek">
+    {% for p in K.PERSIAPAN %}<li><label><input type="checkbox"> {{ p }}</label></li>{% endfor %}
+  </ul>
+  <div class="aksi tidak-cetak"><button class="tombol" type="button" data-cetak>Cetak kartu</button>
+  <a class="tombol utama" href="{{ url_for('konsultasi') }}">Mulai konsultasi</a></div>
+</section>
+{% endblock %}

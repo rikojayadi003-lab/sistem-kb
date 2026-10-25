@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Beranda{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-teks">
+    <span class="lencana">Sistem pakar · Forward chaining</span>
+    <h1>Konseling KB awal yang jelas, runtut, dan aman.</h1>
+    <p>Jawab beberapa pertanyaan singkat. Mesin inferensi menelusuri aturan dari pengetahuan {{ K.SUMBER.pakar }} dan memperlihatkan <strong>alasan</strong> di balik setiap saran, langkah demi langkah.</p>
+    <div class="aksi">
+      <a class="tombol utama" href="{{ url_for('konsultasi') }}">Mulai konsultasi</a>
+      <a class="tombol" href="{{ url_for('basis') }}">Lihat basis pengetahuan</a>
+    </div>
+    <div class="chips">
+      <span class="bantu">Langsung ke topik:</span>
+      {% for k, p in presets.items() %}<a class="chip" href="{{ url_for('konsultasi', preset=k) }}">{{ p.judul }}</a>{% endfor %}
+    </div>
+  </div>
+  <figure class="hero-rantai" aria-label="Contoh rantai inferensi">
+    <div class="rantai">
+      <div class="r-kol"><span class="r-node fakta">F01 Butuh info KB</span><span class="r-node fakta">F02 Tanya KB suntik</span></div>
+      <span class="r-panah" aria-hidden="true">→</span>
+      <div class="r-kol"><span class="r-node aturan">R01</span></div>
+      <span class="r-panah" aria-hidden="true">→</span>
+      <div class="r-kol"><span class="r-node simpul">P01 Penggunaan KB suntik</span></div>
+    </div>
+    <figcaption>Fakta dari jawaban Anda memicu aturan, lalu aturan menghasilkan kesimpulan.</figcaption>
+  </figure>
+</section>
+
+<section class="grid fitur">
+  <article class="kartu"><h3>Konsultasi bertahap</h3><p>Empat langkah singkat: kebutuhan, keluhan, tanda bahaya, dan kondisi Anda.</p></article>
+  <article class="kartu"><h3>Selalu ada alasannya</h3><p>Setiap kesimpulan dilengkapi pohon pembuktian: dari aturan mana dan dari fakta apa.</p></article>
+  <article class="kartu"><h3>Diagram inferensi</h3><p>Lihat jaringan fakta, aturan, dan kesimpulan yang dibangun mesin untuk Anda.</p></article>
+  <article class="kartu"><h3>Pagar pengaman</h3><p>Tanda bahaya memunculkan peringatan darurat. Sistem tidak pernah memberi diagnosis.</p></article>
+  <article class="kartu"><h3>Pengingat kunjungan</h3><p>Catat tanggal kunjungan ulang dari bidan, hitung mundur, dan simpan ke kalender.</p></article>
+  <article class="kartu"><h3>Statistik anonim</h3><p>Ringkasan topik konsultasi tanpa nama, tanpa data pribadi.</p></article>
+</section>
+
+<section class="strip">
+  <div><b>{{ jml_fakta }}</b><span>jenis masukan</span></div>
+  <div><b>{{ jml_aturan }}</b><span>aturan dari pakar</span></div>
+  <div><b>3</b><span>tingkat urgensi</span></div>
+</section>
+{% endblock %}

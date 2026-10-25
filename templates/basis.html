@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Basis pengetahuan{% endblock %}
+{% block content %}
+<h1>Basis pengetahuan</h1>
+<p class="bantu">Seluruh fakta dan aturan yang dipakai mesin inferensi. Sumber: wawancara dengan {{ K.SUMBER.pakar }}, {{ K.SUMBER.lokasi }}.</p>
+
+<section class="kartu">
+  <h2>Validasi pakar</h2>
+  <ul class="cek statis">{% for v in K.VALIDASI %}<li>✔ {{ v }} <b>Sesuai</b></li>{% endfor %}</ul>
+  <p class="bantu">Validasi berlaku untuk rancangan pada instrumen. Item berlabel <span class="lencana kecil kuning">ekstensi</span> atau <span class="lencana kecil biru">penyesuaian</span> perlu dikonfirmasi pakar.</p>
+</section>
+
+<section>
+  <h2>Catatan penyesuaian</h2>
+  <ol class="catatan-list">{% for c in K.CATATAN_PENYESUAIAN %}<li>{{ c }}</li>{% endfor %}</ol>
+</section>
+
+<label class="medan cari">Cari fakta atau aturan
+  <input type="search" id="cari" placeholder="Ketik kode atau kata, mis. R01 atau suntik">
+</label>
+
+<h2>Fakta dan kesimpulan</h2>
+<div class="tabel-wadah">
+<table data-filter>
+  <thead><tr><th>Kode</th><th>Uraian</th><th>Jenis</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for kode, f in K.FACTS.items() %}
+    <tr><td><code>{{ kode }}</code></td><td>{{ f.teks }}</td>
+      <td>{{ {'masukan': 'Fakta', 'kesimpulan': 'Kesimpulan', 'urgensi': 'Urgensi'}[f.tipe] }}</td>
+      <td><span class="lencana kecil {{ {'tervalidasi': 'hijau', 'penyesuaian': 'biru', 'ekstensi': 'kuning'}[f.jenis] }}">{{ f.jenis }}</span></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+<h2>Aturan IF–THEN</h2>
+<div class="tabel-wadah">
+<table data-filter>
+  <thead><tr><th>Aturan</th><th>Rumus</th><th>Sumber</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for r in rules %}
+    <tr><td><b>{{ r.id }}</b></td>
+      <td><code>{{ r.rumus }}</code>{% if r.catatan %}<br><span class="bantu">{{ r.catatan }}</span>{% endif %}</td>
+      <td>{{ r.sumber }}</td>
+      <td><span class="lencana kecil {{ 'hijau' if r.jenis == 'tervalidasi' else 'kuning' }}">{{ r.jenis }}</span></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

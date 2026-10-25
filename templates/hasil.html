@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Hasil konsultasi{% endblock %}
+
+{% macro pohon(n) %}
+<li><code>{{ n.kode }}</code> {{ n.teks }}
+  {% if n.aturan %}<span class="lencana kecil">oleh {{ n.aturan }}</span>{% else %}<span class="lencana kecil abu">masukan Anda</span>{% endif %}
+  {% if n.anak %}<ul>{% for a in n.anak %}{{ pohon(a) }}{% endfor %}</ul>{% endif %}
+</li>
+{% endmacro %}
+
+{% macro kartu(k) %}
+<article class="kartu hasil-kartu" id="{{ k.kode }}">
+  <header>
+    <span class="ikon-besar" aria-hidden="true">{{ k.ikon }}</span>
+    <div><h3>{{ k.judul }}</h3>
+      <span class="lencana kecil">{{ k.kode }} · aturan {{ k.aturan }}</span>
+      {% if k.jenis == 'ekstensi' %}<span class="lencana kecil kuning">perlu validasi pakar</span>{% endif %}
+    </div>
+  </header>
+  <p class="rekom">{{ k.rekomendasi }}</p>
+  <ul class="poin">{% for teks, sumber in k.poin %}<li>{{ teks }} <span class="sumber">[{{ sumber }}]</span></li>{% endfor %}</ul>
+  <details class="tidak-cetak"><summary>Mengapa sistem menyimpulkan ini?</summary>
+    <ul class="pohon">{{ pohon(k.pohon) }}</ul>
+  </details>
+</article>
+{% endmacro %}
+
+{% block content %}
+<div class="judul-baris">
+  <div><h1>Hasil konsultasi</h1><p class="bantu">Kode {{ kode }} · {{ rec.dibuat.replace('T', ' ') }}{% if kb %} · KB saat ini: {{ kb }}{% endif %}</p></div>
+  <div class="aksi tidak-cetak">
+    <button class="tombol" type="button" data-cetak>Cetak</button>
+    <a class="tombol" href="{{ url_for('unduh_txt', kode=kode) }}">Unduh .txt</a>
+    <a class="tombol utama" href="{{ url_for('konsultasi') }}">Konsultasi baru</a>
+  </div>
+</div>
+
+<section class="banner {{ v.urgensi_info.kelas }}" role="{{ 'alert' if v.urgensi == 3 else 'status' }}">
+  <span class="banner-ikon" aria-hidden="true">{{ v.urgensi_info.ikon }}</span>
+  <div>
+    <span class="label">{{ v.urgensi_info.label }}</span>
+    <h2>{{ v.urgensi_info.judul }}</h2>
+    <p>{{ v.urgensi_info.teks }}</p>
+  </div>
+</section>
+
+<section class="ringkas">
+  <h2>Jawaban Anda</h2>
+  <div class="chips">
+    {% for grup in ('kebutuhan', 'keluhan', 'bahaya', 'kondisi') %}
+      {% for kode_, nama in v.ringkasan[grup] %}<span class="chip statis {{ grup }}">{{ nama }}</span>{% endfor %}
+    {% endfor %}
+  </div>
+</section>
+
+<section>
+  <h2>Informasi untuk Anda</h2>
+  <div class="grid dua">
+    {% for k in v.kartu_utama %}{{ kartu(k) }}{% endfor %}
+  </div>
+  {% if v.kartu_lain %}
+  <details class="lipat"><summary>Informasi umum lainnya (baca setelah mendapat pertolongan)</summary>
+    <div class="grid dua">{% for k in v.kartu_lain %}{{ kartu(k) }}{% endfor %}</div>
+  </details>
+  {% endif %}
+  {% if not v.kartu %}<p class="kosong">Belum ada aturan yang terpicu. Silakan konsultasi langsung dengan bidan atau tenaga kesehatan.</p>{% endif %}
+</section>
+
+<section class="tidak-cetak">
+  <h2>Jejak forward chaining</h2>
+  <p class="bantu">Mesin memulai dari fakta jawaban Anda, lalu mengulang siklus: cari aturan yang premisnya terpenuhi, tambahkan kesimpulannya ke memori kerja, sampai tidak ada aturan baru. Total {{ v.hasil.jumlah_siklus }} siklus.</p>
+  <h3>Memori kerja awal</h3>
+  <ul class="memori">{% for kode_, teks in v.memori_awal %}<li><code>{{ kode_ }}</code> {{ teks }}</li>{% endfor %}</ul>
+
+  <h3>Diagram inferensi</h3>
+  <div class="graf-wadah">{{ v.graf }}</div>
+  <p class="legenda"><span class="sw fakta"></span>Fakta masukan <span class="sw turunan"></span>Fakta turunan <span class="sw aturan"></span>Aturan <span class="sw simpul"></span>Kesimpulan</p>
+
+  <h3>Tabel siklus</h3>
+  <div class="tabel-wadah">
+  <table>
+    <thead><tr><th>Siklus</th><th>Aturan</th><th>Premis terpenuhi</th><th>Kesimpulan</th></tr></thead>
+    <tbody>
+    {% for l in v.langkah %}
+      <tr><td>{{ l.siklus }}</td>
+        <td><b>{{ l.aturan }}</b>{% if l.jenis == 'ekstensi' %} <span class="lencana kecil kuning">ekstensi</span>{% endif %}<br><code class="kecil">{{ l.rumus }}</code></td>
+        <td>{% for p, nama in l.premis %}<code>{{ p }}</code> {{ nama }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+        <td><code>{{ l.hasil[0] }}</code> {{ l.hasil[1] }}{% if not l.baru %} <span class="lencana kecil abu">sudah ada</span>{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<p class="bantu">Catatan: informasi ini edukasi awal, bukan diagnosis, dan tidak menggantikan pemeriksaan oleh bidan atau tenaga kesehatan.</p>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Tentang{% endblock %}
+{% block content %}
+<h1>Tentang sistem ini</h1>
+
+<section class="kartu">
+  <h2>Apa itu forward chaining?</h2>
+  <p>Bayangkan bidan yang mendengar cerita Anda: "ingin tanya KB suntik" (fakta), lalu mencocokkan dengan pengalamannya (aturan), sampai tiba pada saran. Forward chaining bekerja begitu: mulai dari fakta yang diketahui, cari aturan yang premisnya terpenuhi, tambahkan kesimpulannya sebagai fakta baru, ulangi sampai tidak ada aturan baru.</p>
+</section>
+
+<section class="kartu">
+  <h2>Batasan penting</h2>
+  <ul class="poin">
+    <li>Sistem hanya memberi edukasi awal dan tidak menegakkan diagnosis.</li>
+    <li>Sistem tidak menentukan metode KB yang cocok untuk Anda tanpa penilaian individual.</li>
+    <li>Tanda bahaya, riwayat penyakit, efek samping berkepanjangan, atau informasi yang tidak lengkap akan diarahkan ke konsultasi langsung.</li>
+    <li>Pemasangan dan pelepasan IUD atau implan hanya oleh tenaga kesehatan yang berwenang dan terlatih.</li>
+  </ul>
+</section>
+
+<section class="kartu">
+  <h2>Privasi</h2>
+  <p>Konsultasi disimpan tanpa nama, tanpa kontak, dan tanpa alamat IP. Pengingat kunjungan hanya tersimpan di browser Anda sendiri.</p>
+</section>
+
+<section class="kartu">
+  <h2>Sumber pengetahuan</h2>
+  <dl class="info">
+    <dt>Pakar</dt><dd>{{ K.SUMBER.pakar }}</dd>
+    <dt>Tempat</dt><dd>{{ K.SUMBER.lokasi }}, {{ K.SUMBER.tanggal }}</dd>
+    <dt>Knowledge engineer</dt><dd>{{ K.SUMBER.knowledge_engineer }}</dd>
+    <dt>Institusi</dt><dd>{{ K.SUMBER.institusi }}</dd>
+  </dl>
+</section>
+{% endblock %}
