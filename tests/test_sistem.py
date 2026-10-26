@@ -106,7 +106,7 @@ class TesWeb(unittest.TestCase):
         self.assertEqual(r.status_code, 200)
         self.assertIn("Penggunaan KB Suntik".encode(), r.data)
         self.assertIn(b"<svg", r.data)
-        t = self.c.get(lok + "/unduh.txt")
+        t = self.c.get(lok.replace("/hasil?", "/hasil/unduh.txt?"))
         self.assertEqual(t.status_code, 200)
         self.assertIn("KB suntik".encode(), t.data)
 
@@ -127,8 +127,8 @@ class TesWeb(unittest.TestCase):
         self.assertNotIn(b"Segera cari pertolongan medis", r.data)
 
     def test_hasil_tidak_ada(self):
-        self.assertEqual(self.c.get("/hasil/abcdefgh").status_code, 404)
-        self.assertEqual(self.c.get("/hasil/../etc").status_code, 404)
+        self.assertEqual(self.c.get("/hasil").status_code, 404)
+        self.assertEqual(self.c.get("/hasil?f=P06,U3,xyz").status_code, 404)
 
     def test_statistik_terisi(self):
         self.kirim(kebutuhan=["F03"])

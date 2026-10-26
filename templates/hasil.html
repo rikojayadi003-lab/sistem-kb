@@ -27,10 +27,10 @@
 
 {% block content %}
 <div class="judul-baris">
-  <div><h1>Hasil konsultasi</h1><p class="bantu">Kode {{ kode }} · {{ rec.dibuat.replace('T', ' ') }}{% if kb %} · KB saat ini: {{ kb }}{% endif %}</p></div>
+  <div><h1>Hasil konsultasi</h1><p class="bantu">{{ dibuat.replace('T', ' ') }}{% if kb %} · KB saat ini: {{ kb }}{% endif %}</p></div>
   <div class="aksi tidak-cetak">
     <button class="tombol" type="button" data-cetak>Cetak</button>
-    <a class="tombol" href="{{ url_for('unduh_txt', kode=kode) }}">Unduh .txt</a>
+    <a class="tombol" href="{{ url_for('unduh_txt', f=f, kb=kbkode) }}">Unduh .txt</a>
     <a class="tombol utama" href="{{ url_for('konsultasi') }}">Konsultasi baru</a>
   </div>
 </div>

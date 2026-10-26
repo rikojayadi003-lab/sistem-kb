@@ -82,9 +82,9 @@ def proses(awal):
     }
 
 
-def ringkasan_txt(kode, dibuat, kb_saat_ini, v):
+def ringkasan_txt(dibuat, kb_saat_ini, v):
     baris = ["%s — Ringkasan Konsultasi" % K.APP["nama"], "=" * 50,
-             "Kode: %s" % kode, "Waktu: %s" % dibuat.replace("T", " "),
+             "Waktu: %s" % dibuat.replace("T", " "),
              "KB saat ini: %s" % K.KB_SAAT_INI.get(kb_saat_ini, "-"), "",
              "STATUS: %s" % v["urgensi_info"]["judul"], v["urgensi_info"]["teks"], ""]
     for k in v["kartu"]:

@@ -13,6 +13,7 @@ Butuh Python 3.9+.
 
 - **Windows:** klik dua kali `run.bat`
 - **Linux / macOS:** `bash run.sh`
+- **Vercel:** tidak perlu environment variable. Statistik di Vercel bersifat sementara (disimpan di /tmp)
 - **Manual:**
   ```
   pip install -r requirements.txt
